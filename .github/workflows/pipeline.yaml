@@ -1,0 +1,40 @@
+name: Terraform Pipeline
+on:
+  push:
+    branches:
+    - main
+
+env:
+  TERRAFORM_VERSION: 1.9.3
+
+jobs:
+
+  tf-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Step 01 - Terraform Setup
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: $TERRAFORM_VERSION
+
+    - name: Step 02 - GitHub Repo CheckOut
+      uses: actions/checkout@v3
+
+    - name: Step 03 - AWS Authentication
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token    : ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region           : us-east-1
+
+    - name: Step 04 - Terraform Init
+      run : terraform -chdir=./terraform/aws init
+
+    - name: Step 05 - Terraform Plan
+      run : terraform -chdir=./terraform/aws plan -out tfplan
+
+    - name: Step 06 - Terraform Apply
+      run : terraform -chdir=./terraform/aws apply -auto-approve tfplan
