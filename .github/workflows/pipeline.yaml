@@ -37,4 +37,4 @@ jobs:
       run : terraform -chdir=./terraform plan -out tfplan
 
     - name: Step 06 - Terraform Apply
-      run : terraform -chdir=./terraform apply -auto-approve tfplan
+      run : terraform -chdir=./terraform apply -destroy -auto-approve tfplan
