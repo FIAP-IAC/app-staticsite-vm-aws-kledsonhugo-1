@@ -38,4 +38,7 @@ jobs:
 
     # - name: Step 06 - Terraform Apply
     #   run : terraform -chdir=./terraform apply -auto-approve tfplan
+
+    - name: Step 07 - Terraform Show
+      run : terraform -chdir=./terraform show
       
