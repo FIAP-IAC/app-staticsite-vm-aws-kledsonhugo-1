@@ -23,7 +23,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Step XX - Checkov
-      run : pip3 install checkov
+      run : |
+       pip3 install checkov
+       checkov --directory ./terraform
 
     # - name: Step 03 - AWS Authentication
     #   uses: aws-actions/configure-aws-credentials@v4
